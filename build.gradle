@@ -1,6 +1,7 @@
 buildscript {
     ext {
         springBootVersion = '2.0.0.M7'
+        junitPluginVersion = '1.0.2'
     }
     repositories {
         mavenCentral()
@@ -9,7 +10,7 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath("org.junit.platform:junit-platform-gradle-plugin:1.0.2")
+        classpath("org.junit.platform:junit-platform-gradle-plugin:${junitPluginVersion}")
     }
 }
 
@@ -39,11 +40,9 @@ dependencies {
     // https://stackoverflow.com/questions/46991022/junit-5-java-9-and-gradle-how-to-pass-add-modules
     runtime('org.glassfish.jaxb:jaxb-runtime:2.3.0')
     runtime('javax.activation:activation:1.1.1')
-    compileOnly('org.projectlombok:lombok')
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('io.projectreactor:reactor-test')
-    testCompile('org.junit.jupiter:junit-jupiter-api:5.0.2')
-    testRuntime('org.junit.jupiter:junit-jupiter-engine:5.0.2')
-    testCompileOnly('org.projectlombok:lombok')
+    testCompile('org.junit.jupiter:junit-jupiter-api')
+    testRuntime('org.junit.jupiter:junit-jupiter-engine')
 }
