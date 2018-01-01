@@ -33,10 +33,9 @@ repositories {
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-actuator')
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-data-cassandra')
     compile('org.springframework.boot:spring-boot-starter-webflux')
     runtime('org.springframework.boot:spring-boot-devtools')
-    runtime('org.hsqldb:hsqldb')
     // https://stackoverflow.com/questions/46991022/junit-5-java-9-and-gradle-how-to-pass-add-modules
     runtime('org.glassfish.jaxb:jaxb-runtime:2.3.0')
     runtime('javax.activation:activation:1.1.1')
