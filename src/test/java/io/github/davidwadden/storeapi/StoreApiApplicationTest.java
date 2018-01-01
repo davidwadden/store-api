@@ -10,9 +10,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SpringBootTest
 class StoreApiApplicationTest {
 
-	@DisplayName("loads a context")
-	@Test
+    @DisplayName("loads a context")
+    @Test
     void contextLoads() {
-	}
+    }
 
 }
