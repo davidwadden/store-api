@@ -12,14 +12,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.UUID;
 
 @JsonDeserialize(builder = Product.Builder.class)
 @Table
 public class Product {
 
     @PrimaryKey("product_id")
-    @CassandraType(type = DataType.Name.BIGINT)
-    private Long productId;
+    @CassandraType(type = DataType.Name.UUID)
+    private UUID productId;
 
     @NotNull
     @Size(min = 2, max = 50)
@@ -54,11 +55,11 @@ public class Product {
         return new Builder();
     }
 
-    public Long getProductId() {
+    public UUID getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(UUID productId) {
         this.productId = productId;
     }
 
@@ -124,7 +125,7 @@ public class Product {
 
     @JsonPOJOBuilder(withPrefix = "")
     public static final class Builder {
-        private Long productId;
+        private UUID productId;
         private @NotNull @Size(min = 2, max = 50) String name;
         private @NotNull @Size(min = 2, max = 50) String productNumber;
         private @NotNull BigDecimal listPrice;
@@ -132,7 +133,7 @@ public class Product {
 
         private Builder() {}
 
-        public Builder productId(Long productId) {
+        public Builder productId(UUID productId) {
             this.productId = productId;
             return this;
         }

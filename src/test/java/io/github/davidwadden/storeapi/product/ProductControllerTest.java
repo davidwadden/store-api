@@ -10,6 +10,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -38,14 +39,14 @@ class ProductControllerTest {
     @Test
     void getAllProducts() {
         Product product1 = Product.newBuilder()
-            .productId(1L)
+            .productId(UUID.randomUUID())
             .name("ProductName")
             .productNumber("123-45X")
             .listPrice(BigDecimal.valueOf(100L))
             .stockCount(10)
             .build();
         Product product2 = Product.newBuilder()
-            .productId(2L)
+            .productId(UUID.randomUUID())
             .name("ProductTwo")
             .productNumber("123-12X")
             .listPrice(BigDecimal.valueOf(2.1d))
@@ -73,7 +74,7 @@ class ProductControllerTest {
     @Test
     void getProduct() {
         Product product = Product.newBuilder()
-            .productId(1L)
+            .productId(UUID.randomUUID())
             .name("ProductName")
             .productNumber("123-45X")
             .listPrice(BigDecimal.valueOf(100L))
@@ -97,15 +98,8 @@ class ProductControllerTest {
     @DisplayName("creates new product")
     @Test
     void createProduct() {
-        Product productToSave = Product.newBuilder()
-            .name("ProductName")
-            .productNumber("123-45X")
-            .listPrice(BigDecimal.valueOf(100L))
-            .stockCount(10)
-            .build();
-
         Product product = Product.newBuilder()
-            .productId(1L)
+            .productId(UUID.randomUUID())
             .name("ProductName")
             .productNumber("123-45X")
             .listPrice(BigDecimal.valueOf(100L))
@@ -118,13 +112,12 @@ class ProductControllerTest {
 
         webTestClient.post().uri("/products")
             .accept(MediaType.APPLICATION_JSON_UTF8)
-            .syncBody(productToSave)
+            .syncBody(product)
             .exchange()
             .expectStatus().isCreated()
             .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
-            .expectBody(Product.class)
-            .isEqualTo(product);
+            .expectBody(Product.class).isEqualTo(product);
 
-        verify(mockRepository).save(productToSave);
+        verify(mockRepository).save(product);
     }
 }

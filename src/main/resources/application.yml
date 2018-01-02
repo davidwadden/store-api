@@ -8,3 +8,5 @@ spring:
       contact-points: 192.168.64.2
       keyspace-name: showcase
       schema-action: recreate_drop_unused
+  jackson:
+    property-naming-strategy: SNAKE_CASE
