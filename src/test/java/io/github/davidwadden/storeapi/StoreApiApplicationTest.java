@@ -12,7 +12,5 @@ class StoreApiApplicationTest {
 
     @DisplayName("loads a context")
     @Test
-    void contextLoads() {
-    }
-
+    void contextLoads() {}
 }

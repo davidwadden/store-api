@@ -1,7 +1,12 @@
 package io.github.davidwadden.storeapi.product;
 
+import com.datastax.driver.core.DataType;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import org.springframework.data.cassandra.core.mapping.CassandraType;
+import org.springframework.data.cassandra.core.mapping.Column;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.Table;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -9,22 +14,29 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 @JsonDeserialize(builder = Product.Builder.class)
+@Table
 public class Product {
 
+    @PrimaryKey("product_id")
+    @CassandraType(type = DataType.Name.BIGINT)
     private Long productId;
 
     @NotNull
     @Size(min = 2, max = 50)
+    @Column("name")
     private String name;
 
     @NotNull
     @Size(min = 2, max = 50)
+    @Column("product_number")
     private String productNumber;
 
     @NotNull
+    @Column("list_price")
     private BigDecimal listPrice;
 
     @NotNull
+    @Column("stock_count")
     private Integer stockCount;
 
     // no-arg constructor for JPA
