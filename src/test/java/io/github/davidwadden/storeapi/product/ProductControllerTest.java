@@ -7,9 +7,12 @@ import org.mockito.Mock;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -64,5 +67,64 @@ class ProductControllerTest {
             .contains(product1, product2);
 
         verify(mockRepository).findAll();
+    }
+
+    @DisplayName("returns product matching id")
+    @Test
+    void getProduct() {
+        Product product = Product.newBuilder()
+            .productId(1L)
+            .name("ProductName")
+            .productNumber("123-45X")
+            .listPrice(BigDecimal.valueOf(100L))
+            .stockCount(10)
+            .build();
+
+        doReturn(Mono.just(product))
+            .when(mockRepository)
+            .findById(anyLong());
+
+        webTestClient.get().uri("/products/1")
+            .accept(MediaType.APPLICATION_JSON_UTF8)
+            .exchange()
+            .expectStatus().isOk()
+            .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+            .expectBody(Product.class).isEqualTo(product);
+
+        verify(mockRepository).findById(1L);
+    }
+
+    @DisplayName("creates new product")
+    @Test
+    void createProduct() {
+        Product productToSave = Product.newBuilder()
+            .name("ProductName")
+            .productNumber("123-45X")
+            .listPrice(BigDecimal.valueOf(100L))
+            .stockCount(10)
+            .build();
+
+        Product product = Product.newBuilder()
+            .productId(1L)
+            .name("ProductName")
+            .productNumber("123-45X")
+            .listPrice(BigDecimal.valueOf(100L))
+            .stockCount(10)
+            .build();
+
+        doReturn(Mono.just(product))
+            .when(mockRepository)
+            .save(any());
+
+        webTestClient.post().uri("/products")
+            .accept(MediaType.APPLICATION_JSON_UTF8)
+            .syncBody(productToSave)
+            .exchange()
+            .expectStatus().isCreated()
+            .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+            .expectBody(Product.class)
+            .isEqualTo(product);
+
+        verify(mockRepository).save(productToSave);
     }
 }
